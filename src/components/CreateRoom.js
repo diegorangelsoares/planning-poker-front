@@ -15,6 +15,10 @@ function CreateRoom() {
         }
     };
 
+    const voltarHome = () => {
+        navigate(`/`);
+    };
+
     return (
         <div>
             <h2>Criar Sala</h2>
@@ -26,6 +30,8 @@ function CreateRoom() {
                 onChange={(e) => setRoomName(e.target.value)}
             />
             <button className="button" onClick={handleCreateRoom}>Criar</button>
+            <div></div>
+            <button className="button" onClick={voltarHome}>Voltar</button>
         </div>
     );
 }
