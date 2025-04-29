@@ -14,6 +14,10 @@ function JoinRoom() {
         }
     };
 
+    const voltarHome = () => {
+        navigate(`/`);
+    };
+
     return (
         <div>
             <h2>Entrar na Sala</h2>
@@ -32,6 +36,8 @@ function JoinRoom() {
                 onChange={(e) => setUserName(e.target.value)}
             />
             <button className="button" onClick={handleJoinRoom}>Entrar</button>
+            <div></div>
+            <button className="button" onClick={voltarHome}>Voltar</button>
         </div>
     );
 }
