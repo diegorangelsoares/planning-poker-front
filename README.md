@@ -4,12 +4,12 @@ Este é o front do projeto Planning Poker, responsável disponibilizar as salas 
 
 ## 🚀 Tecnologias
 
-- react: 18.2.0
-- react-dom: 18.2.0
-- react-router-dom: 6.21.2
-- react-scripts: 5.0.1
-- socket.io-client: 4.7.2
-- web-vitals: 3.3.1
+- React: 18.2.0
+- React-dom: 18.2.0
+- React-router-dom: 6.21.2
+- React-scripts: 5.0.1
+- Socket.io-client: 4.7.2
+- Web-vitals: 3.3.1
 
 
 ## Build
