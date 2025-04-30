@@ -43,9 +43,9 @@ function PokerRoom() {
         socket.emit('revealVotes', roomId);
     };
 
-    // const voltarHome = () => {
-    //     navigate(`/`);
-    // };
+    const voltarHome = () => {
+        navigate(`/`);
+    };
 
     return (
         <div>
@@ -94,7 +94,7 @@ function PokerRoom() {
                     <h3>Média: {average}</h3>
                 </>
             )}
-            {/*<button className="button" onClick={voltarHome}>Voltar</button>*/}
+            <button className="button" onClick={voltarHome}>Voltar</button>
         </div>
 
     );
