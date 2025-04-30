@@ -27,10 +27,17 @@ function PokerRoom() {
             setAverage(average);
         });
 
+        socket.on('votesReset', () => {
+            setVotes([]);
+            setSelectedCard(null);
+            setCanReveal(false);
+        });
+
         return () => {
             socket.off('updateUsers');
             socket.off('allVoted');
             socket.off('votesRevealed');
+            socket.off('votesReset');
         };
     }, []);
 
@@ -45,6 +52,10 @@ function PokerRoom() {
 
     const voltarHome = () => {
         navigate(`/`);
+    };
+
+    const handleResetVotes = () => {
+        socket.emit('resetVotes', roomId);
     };
 
     return (
@@ -95,6 +106,10 @@ function PokerRoom() {
                 </>
             )}
             <button className="button" onClick={voltarHome}>Voltar</button>
+            <div></div>
+            <button className="button button-margin-top" onClick={handleResetVotes}>
+                Resetar Votação
+            </button>
         </div>
 
     );
