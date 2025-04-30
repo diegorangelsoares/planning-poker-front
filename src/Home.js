@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:4000');
+const socket = io('https://planning-poker-backend-xts0.onrender.com');
 
 function Home() {
     const [roomName, setRoomName] = useState('');
