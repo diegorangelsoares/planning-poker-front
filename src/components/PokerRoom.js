@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import socket from '../socket';
 
 function PokerRoom() {
@@ -9,6 +9,7 @@ function PokerRoom() {
     const [canReveal, setCanReveal] = useState(false);
     const [votes, setVotes] = useState([]);
     const [average, setAverage] = useState(null);
+    const navigate = useNavigate();
 
     const cards = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39', '?', '☕']; // Números pares de 0 a 60
 
@@ -26,10 +27,17 @@ function PokerRoom() {
             setAverage(average);
         });
 
+        socket.on('votesReset', () => {
+            setVotes([]);
+            setSelectedCard(null);
+            setCanReveal(false);
+        });
+
         return () => {
             socket.off('updateUsers');
             socket.off('allVoted');
             socket.off('votesRevealed');
+            socket.off('votesReset');
         };
     }, []);
 
@@ -40,6 +48,14 @@ function PokerRoom() {
 
     const handleRevealVotes = () => {
         socket.emit('revealVotes', roomId);
+    };
+
+    const voltarHome = () => {
+        navigate(`/`);
+    };
+
+    const handleResetVotes = () => {
+        socket.emit('resetVotes', roomId);
     };
 
     return (
@@ -74,6 +90,8 @@ function PokerRoom() {
                         </button>
                     )}
                 </>
+
+
             ) : (
                 <>
                     <h3>Resultados:</h3>
@@ -87,7 +105,13 @@ function PokerRoom() {
                     <h3>Média: {average}</h3>
                 </>
             )}
+            <button className="button" onClick={voltarHome}>Voltar</button>
+            <div></div>
+            <button className="button button-margin-top" onClick={handleResetVotes}>
+                Resetar Votação
+            </button>
         </div>
+
     );
 }
 

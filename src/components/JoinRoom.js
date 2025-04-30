@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket';
 
@@ -7,12 +7,34 @@ function JoinRoom() {
     const [userName, setUserName] = useState('');
     const navigate = useNavigate();
 
+    // useEffect(() => {
+    //     socket.on('roomNotFound', () => {
+    //         alert('Sala não encontrada!');
+    //     });
+    //
+    //     return () => {
+    //         socket.off('roomNotFound');
+    //     };
+    // }, []);
+
     const handleJoinRoom = () => {
         if (roomId.trim() !== '' && userName.trim() !== '') {
             socket.emit('joinRoom', { roomId, userName });
             navigate(`/room/${roomId}`);
         }
     };
+
+    // const handleJoinRoom = () => {
+    //     if (roomId.trim() !== '' && userName.trim() !== '') {
+    //         socket.emit('joinRoom', { roomId, userName });
+    //
+    //         socket.on('updateUsers', () => {
+    //             navigate(`/room/${roomId}`);
+    //         });
+    //     } else {
+    //         alert('Preencha todos os campos!');
+    //     }
+    // };
 
     const voltarHome = () => {
         navigate(`/`);
