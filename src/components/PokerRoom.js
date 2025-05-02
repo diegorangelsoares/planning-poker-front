@@ -85,7 +85,7 @@ function PokerRoom() {
                     </div>
 
                     {canReveal && (
-                        <button className="button" style={{ marginTop: '20px' }} onClick={handleRevealVotes}>
+                        <button className="buttonrevelar" style={{ marginTop: '20px' }} onClick={handleRevealVotes}>
                             Revelar Votos
                         </button>
                     )}
@@ -105,11 +105,12 @@ function PokerRoom() {
                 </>
             )}
             <div></div>
-            <button className="button" onClick={voltarHome}>Voltar</button>
-            <div></div>
-            <button className="button button-margin-top" onClick={handleResetVotes}>
+            <button className="buttonreset" onClick={handleResetVotes}>
                 Resetar Votação
             </button>
+            <div></div>
+            <button className="button" onClick={voltarHome}>Voltar</button>
+            <div></div>
         </div>
 
     );
