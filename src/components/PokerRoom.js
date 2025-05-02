@@ -91,7 +91,6 @@ function PokerRoom() {
                     )}
                 </>
 
-
             ) : (
                 <>
                     <h3>Resultados:</h3>
