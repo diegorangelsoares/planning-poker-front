@@ -68,7 +68,6 @@ function PokerRoom() {
                     <li key={idx}>{user}</li>
                 ))}
             </ul>
-
             {votes.length === 0 ? (
                 <>
                     <h3>Escolha sua carta:</h3>
@@ -83,7 +82,6 @@ function PokerRoom() {
                             </div>
                         ))}
                     </div>
-
                     {canReveal && (
                         <button className="buttonrevelar" style={{ marginTop: '20px' }} onClick={handleRevealVotes}>
                             Revelar Votos
