@@ -47,7 +47,7 @@ function CreateRoom() {
                 <div className="link-section">
                     <h3>Sala criada com sucesso!</h3>
                     <p>ID da Sala: <strong>{roomId}</strong></p>
-                    <p>Link: <a href={createdRoomLink} target="_blank" rel="noopener noreferrer">{createdRoomLink}</a></p>
+                    {/*<p>Link: <a href={createdRoomLink} target="_blank" rel="noopener noreferrer">{createdRoomLink}</a></p>*/}
                 </div>
             )}
             <div></div>
