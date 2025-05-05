@@ -23,7 +23,7 @@ function JoinRoom() {
         }
     };
 
-    const voltarHome = () => navigate(`/`);
+    const voltarHome = () => navigate('/');
 
     return (
         <div className="card-box">
@@ -33,18 +33,28 @@ function JoinRoom() {
                 type="text"
                 placeholder="ID da Sala"
                 value={roomId}
-                onChange={(e) => { setRoomId(e.target.value); setError(''); }}
+                onChange={(e) => {
+                    setRoomId(e.target.value);
+                    setError('');
+                }}
             />
             <input
                 className="input"
                 type="text"
                 placeholder="Seu Nome"
                 value={userName}
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => {
+                    setUserName(e.target.value);
+                    setError('');
+                }}
             />
-            <button className="button" onClick={handleJoinRoom}>Entrar</button>
+
+            <div className="button-row">
+                <button className="button" onClick={handleJoinRoom}>Entrar</button>
+                <button className="button" onClick={voltarHome}>Voltar</button>
+            </div>
+
             {error && <p className="error-text">{error}</p>}
-            <button className="button button-margin-top" onClick={voltarHome}>Voltar</button>
         </div>
     );
 }
