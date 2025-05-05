@@ -12,7 +12,7 @@ function CreateRoom() {
     const handleCreateRoom = () => {
         if (roomName.trim() !== '') {
             setIsCreating(true);
-            let sequence = Array.from({ length: 40 }, (_, i) => String(i)).concat(['?', '☕']);
+            const sequence = Array.from({ length: 40 }, (_, i) => String(i)).concat(['?', '☕']);
 
             socket.emit('createRoom', { roomName, sequence });
 
@@ -26,7 +26,7 @@ function CreateRoom() {
         }
     };
 
-    const voltarHome = () => navigate(`/`);
+    const voltarHome = () => navigate('/');
 
     return (
         <div className="card-box">
@@ -40,21 +40,26 @@ function CreateRoom() {
                         value={roomName}
                         onChange={(e) => setRoomName(e.target.value)}
                     />
-                    <button
-                        className="button button-margin-top"
-                        onClick={handleCreateRoom}
-                        disabled={isCreating}
-                    >
-                        {isCreating ? 'Criando...' : 'Criar'}
-                    </button>
+                    <div className="button-row">
+                        <button
+                            className="button"
+                            onClick={handleCreateRoom}
+                            disabled={isCreating}
+                        >
+                            {isCreating ? 'Criando...' : 'Criar'}
+                        </button>
+                        <button className="button" onClick={voltarHome}>Voltar</button>
+                    </div>
                 </>
             ) : (
                 <>
                     <h3>Sala criada com sucesso!</h3>
-                    <p>ID da Sala: <strong>{roomId}</strong></p>
+                    <p>ID: <strong>{roomId}</strong></p>
+                    <div className="button-row">
+                        <button className="button" onClick={voltarHome}>Voltar</button>
+                    </div>
                 </>
             )}
-            <button className="button button-margin-top" onClick={voltarHome}>Voltar</button>
         </div>
     );
 }
