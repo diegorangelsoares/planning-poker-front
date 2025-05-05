@@ -11,6 +11,9 @@ Este é o front do projeto Planning Poker, responsável disponibilizar as salas 
 - Socket.io-client: 4.7.2
 - Web-vitals: 3.3.1
 
+## 🛠️ Correções e melhorias
+
+- Entrar em sala apenas que ainda existam
 
 ## Build
 
