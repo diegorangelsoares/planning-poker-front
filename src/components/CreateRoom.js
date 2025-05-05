@@ -5,11 +5,13 @@ import socket from '../socket';
 function CreateRoom() {
     const [roomName, setRoomName] = useState('');
     const [roomId, setRoomId] = useState('');
+    const [isCreating, setIsCreating] = useState(false); // novo estado
     const [createdRoomLink, setCreatedRoomLink] = useState('');
     const navigate = useNavigate();
 
     const handleCreateRoom = () => {
         if (roomName.trim() !== '') {
+            setIsCreating(true); // desabilita botão
             let sequence = ['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39', '?', '☕'];
 
             socket.emit('createRoom', { roomName, sequence });
@@ -17,6 +19,7 @@ function CreateRoom() {
             socket.on('roomCreated', ({ roomId }) => {
                 setRoomId(roomId);
                 setCreatedRoomLink(`https://www.pleinipouquer.com/room/${roomId}`);
+                setIsCreating(false); // reabilita se quiser fazer nova sala
             });
         } else {
             alert('Digite um nome para sala!');
@@ -39,7 +42,13 @@ function CreateRoom() {
                         value={roomName}
                         onChange={(e) => setRoomName(e.target.value)}
                     />
-                    <button className="button button-margin-top" onClick={handleCreateRoom}>Criar</button>
+                    <button
+                        className="button button-margin-top"
+                        onClick={handleCreateRoom}
+                        disabled={isCreating}
+                    >
+                    {isCreating ? 'Criando...' : 'Criar'}
+                    </button>
                 </>
             )}
 
