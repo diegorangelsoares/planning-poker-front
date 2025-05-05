@@ -1,23 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import socket from '../socket';
 
 function JoinRoom() {
-
     const [roomId, setRoomId] = useState('');
     const [userName, setUserName] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // const handleJoinRoom = () => {
-    //     if (roomId.trim() !== '' && userName.trim() !== '') {
-    //         socket.emit('joinRoom', { roomId, userName });
-    //         navigate(`/room/${roomId}`);
-    //     }
-    // };
-
     const handleJoinRoom = () => {
-        if (roomId.trim() !== '' && userName.trim() !== '') {
+        if (roomId.trim() && userName.trim()) {
             socket.emit('checkRoomExists', roomId, (response) => {
                 if (response.exists) {
                     socket.emit('joinRoom', { roomId, userName });
@@ -31,22 +23,17 @@ function JoinRoom() {
         }
     };
 
-    const voltarHome = () => {
-        navigate(`/`);
-    };
+    const voltarHome = () => navigate(`/`);
 
     return (
-        <div>
+        <div className="card-box">
             <h2>Entrar na Sala</h2>
             <input
                 className="input"
                 type="text"
                 placeholder="ID da Sala"
                 value={roomId}
-                onChange={(e) => {
-                    setRoomId(e.target.value);
-                    setError('');
-                }}
+                onChange={(e) => { setRoomId(e.target.value); setError(''); }}
             />
             <input
                 className="input"
@@ -56,9 +43,8 @@ function JoinRoom() {
                 onChange={(e) => setUserName(e.target.value)}
             />
             <button className="button" onClick={handleJoinRoom}>Entrar</button>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <div></div>
-            <button className="button" onClick={voltarHome}>Voltar</button>
+            {error && <p className="error-text">{error}</p>}
+            <button className="button button-margin-top" onClick={voltarHome}>Voltar</button>
         </div>
     );
 }

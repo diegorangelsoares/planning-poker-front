@@ -8,14 +8,14 @@ function App() {
     const navigate = useNavigate();
 
     return (
-        <div className="container">
-            <h1 className="title">Pleini Pouquer</h1>
-            <h2 className="title">Cuidado pra num errar o botão kkk</h2>
+        <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
+            <h1 className="text-4xl font-bold text-blue-700 mb-2">Pleini Pouquer</h1>
+            <h2 className="text-lg text-gray-500 mb-6">Cuidado pra num errar o botão kkk</h2>
             <Routes>
                 <Route path="/" element={
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                        <button className="button" onClick={() => navigate('/create')}>Criar Sala</button>
-                        <button className="button" onClick={() => navigate('/join')}>Entrar em Sala</button>
+                    <div className="flex flex-col gap-4 w-full max-w-md">
+                        <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-xl shadow-md" onClick={() => navigate('/create')}>Criar Sala</button>
+                        <button className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-xl shadow-md" onClick={() => navigate('/join')}>Entrar em Sala</button>
                     </div>
                 } />
                 <Route path="/create" element={<CreateRoom />} />
