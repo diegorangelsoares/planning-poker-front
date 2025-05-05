@@ -15,17 +15,19 @@ function JoinRoom() {
     //         navigate(`/room/${roomId}`);
     //     }
     // };
+
     const handleJoinRoom = () => {
-        if (roomId.trim() !== '') {
+        if (roomId.trim() !== '' && userName.trim() !== '') {
             socket.emit('checkRoomExists', roomId, (response) => {
                 if (response.exists) {
+                    socket.emit('joinRoom', { roomId, userName });
                     navigate(`/room/${roomId}`);
                 } else {
                     setError('Sala não encontrada.');
                 }
             });
         } else {
-            setError('Informe o ID da sala.');
+            setError('Informe o ID da sala e seu nome.');
         }
     };
 
