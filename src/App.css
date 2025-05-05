@@ -89,3 +89,21 @@ body {
   background-color: #007bff;
   color: white;
 }
+
+.versao {
+  position: fixed; /* Fixa a logomarca na posição */
+  bottom: 10px; /* Define a distância da parte inferior */
+  left: 10px;
+  z-index: 100; /* Garante que esteja acima de outros elementos */
+  color: #4767e3;
+  font-size: 14px;
+}
+
+.infodev {
+  position: fixed; /* Fixa a logomarca na posição */
+  bottom: 10px; /* Define a distância da parte inferior */
+  right: 10px;
+  z-index: 100; /* Garante que esteja acima de outros elementos */
+  color: #4767e3;
+  font-size: 14px;
+}
