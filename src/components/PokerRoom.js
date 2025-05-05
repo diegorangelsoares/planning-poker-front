@@ -74,8 +74,10 @@ function PokerRoom() {
                     <h3>Média: {average}</h3>
                 </>
             )}
-            <button className="buttonreset" onClick={handleResetVotes}>Resetar Votação</button>
-            <button className="button" onClick={voltarHome}>Voltar</button>
+            <div className="button-row">
+                <button className="buttonreset" onClick={handleResetVotes}>Resetar Votação</button>
+                <button className="button" onClick={voltarHome}>Voltar</button>
+            </div>
         </div>
     );
 }
