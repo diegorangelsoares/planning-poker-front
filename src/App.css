@@ -284,3 +284,11 @@ body {
   margin-top: 10px;
   font-weight: bold;
 }
+
+h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #393939;
+  text-align: center;
+}

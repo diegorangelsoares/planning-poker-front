@@ -10,7 +10,7 @@ function App() {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
             <h1 className="text-4xl font-bold text-blue-700 mb-2">Pleini Pouquer</h1>
-            <h2 className="text-lg text-gray-500 mb-6">🤼🏾‍♂️🎲 Cuidado pra num errar o butãum kkk 🃏💡</h2>
+            <h2 className="text-lg text-gray-500 mb-6">🤼🏾‍♂️🎲 Cuidado pra num errar o butãum 🃏💡</h2>
             <Routes>
                 <Route path="/" element={
                     <div className="flex flex-col gap-4 w-full max-w-md">
