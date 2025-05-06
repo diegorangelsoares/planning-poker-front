@@ -7,13 +7,30 @@ function CreateRoom() {
     const [roomId, setRoomId] = useState('');
     const [isCreating, setIsCreating] = useState(false);
     const [createdRoomLink, setCreatedRoomLink] = useState('');
+    const [sequenceType, setSequenceType] = useState('sequential');
     const navigate = useNavigate();
+
+    const generateSequence = (type) => {
+        let sequence = [];
+        if (type === 'sequential') {
+            sequence = Array.from({ length: 40 }, (_, i) => String(i));
+        } else if (type === 'even') {
+            sequence = Array.from({ length: 40 }, (_, i) => String(i * 2));
+        } else if (type === 'fibonacci') {
+            let fib = [0, 1];
+            while (fib.length < 40) {
+                const next = fib[fib.length - 1] + fib[fib.length - 2];
+                fib.push(next);
+            }
+            sequence = fib.slice(0, 40).map(String);
+        }
+        return sequence.concat(['?', '☕']);
+    };
 
     const handleCreateRoom = () => {
         if (roomName.trim() !== '') {
             setIsCreating(true);
-            const sequence = Array.from({ length: 40 }, (_, i) => String(i)).concat(['?', '☕']);
-
+            const sequence = generateSequence(sequenceType);
             socket.emit('createRoom', { roomName, sequence });
 
             socket.on('roomCreated', ({ roomId }) => {
@@ -40,6 +57,15 @@ function CreateRoom() {
                         value={roomName}
                         onChange={(e) => setRoomName(e.target.value)}
                     />
+                    <select
+                        className="input"
+                        value={sequenceType}
+                        onChange={(e) => setSequenceType(e.target.value)}
+                    >
+                        <option value="sequential">Sequencial padrão (0,1,2,3...)</option>
+                        <option value="even">Pares padrão (0,2,4,6...)</option>
+                        <option value="fibonacci">Fibonacci</option>
+                    </select>
                     <div className="button-row">
                         <button
                             className="button"
