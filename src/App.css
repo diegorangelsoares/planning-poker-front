@@ -180,14 +180,67 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
+.info-section {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.room-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.participants-list-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.participant-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 20px 0;
+}
+
+.participant-list li {
+  padding: 2px 0;
+}
+
 .results {
   margin-top: 20px;
   text-align: left;
 }
 
+.results-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
 .results-list li {
-  padding: 4px 0;
-  border-bottom: 1px solid #ddd;
+  padding: 2px 0;
+}
+
+.results-section {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.results-average {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+.results-title {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
 }
 
 .average {
