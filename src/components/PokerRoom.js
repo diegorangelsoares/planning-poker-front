@@ -9,9 +9,8 @@ function PokerRoom() {
     const [canReveal, setCanReveal] = useState(false);
     const [votes, setVotes] = useState([]);
     const [average, setAverage] = useState(null);
+    const [cards, setCards] = useState([]);
     const navigate = useNavigate();
-
-    const cards = Array.from({ length: 40 }, (_, i) => String(i)).concat(['?', '☕']);
 
     useEffect(() => {
         socket.on('updateUsers', ({ users }) => setUsers(users));
@@ -20,6 +19,11 @@ function PokerRoom() {
             setVotes(votes);
             setAverage(average);
         });
+
+        socket.on('setSequence', ({ sequence }) => {
+            setCards(sequence);
+        });
+
         socket.on('votesReset', () => {
             setVotes([]);
             setSelectedCard(null);
@@ -33,6 +37,35 @@ function PokerRoom() {
             socket.off('votesReset');
         };
     }, []);
+
+    // useEffect(() => {
+    //
+    //     socket.emit('joinRoom', { roomId, userName: localStorage.getItem('userName') || 'Anônimo' });
+    //
+    //     socket.on('setSequence', ({ sequence }) => {
+    //         setCards(sequence);
+    //     });
+    //
+    //     socket.on('updateUsers', ({ users }) => setUsers(users));
+    //     socket.on('allVoted', () => setCanReveal(true));
+    //     socket.on('votesRevealed', ({ votes, average }) => {
+    //         setVotes(votes);
+    //         setAverage(average);
+    //     });
+    //     socket.on('votesReset', () => {
+    //         setVotes([]);
+    //         setSelectedCard(null);
+    //         setCanReveal(false);
+    //     });
+    //
+    //     return () => {
+    //         socket.off('setSequence');
+    //         socket.off('updateUsers');
+    //         socket.off('allVoted');
+    //         socket.off('votesRevealed');
+    //         socket.off('votesReset');
+    //     };
+    // }, [roomId]);
 
     const handleVote = (value) => {
         setSelectedCard(value);
