@@ -47,7 +47,13 @@ function PokerRoom() {
         <div className="card-box">
             <h2>Sala: {roomId}</h2>
             <h3>Participantes:</h3>
-            <ul>{users.map((user, i) => <li key={i}>{user}</li>)}</ul>
+            <ul>
+                {users.map((user, i) => (
+                    <li key={i}>
+                        {user.name} {user.hasVoted && '✔️'}
+                    </li>
+                ))}
+            </ul>
 
             {votes.length === 0 ? (
                 <>
@@ -58,25 +64,37 @@ function PokerRoom() {
                                 key={idx}
                                 className={`card ${selectedCard === value ? 'selected' : ''}`}
                                 onClick={() => handleVote(value)}
-                            >{value}</div>
+                            >
+                                {value}
+                            </div>
                         ))}
                     </div>
                     {canReveal && (
-                        <button className="buttonrevelar" onClick={handleRevealVotes}>Revelar Votos</button>
+                        <button className="buttonrevelar" onClick={handleRevealVotes}>
+                            Revelar Votos
+                        </button>
                     )}
                 </>
             ) : (
                 <>
                     <h3>Resultados:</h3>
                     <ul>
-                        {votes.map((vote, idx) => <li key={idx}>{vote.user}: {vote.vote}</li>)}
+                        {votes.map((vote, idx) => (
+                            <li key={idx}>
+                                {vote.user}: {vote.vote}
+                            </li>
+                        ))}
                     </ul>
                     <h3>Média: {average}</h3>
                 </>
             )}
             <div className="button-row">
-                <button className="buttonreset" onClick={handleResetVotes}>Resetar Votação</button>
-                <button className="button" onClick={voltarHome}>Voltar</button>
+                <button className="buttonreset" onClick={handleResetVotes}>
+                    Resetar Votação
+                </button>
+                <button className="button" onClick={voltarHome}>
+                    Voltar
+                </button>
             </div>
         </div>
     );
