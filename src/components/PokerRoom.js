@@ -130,7 +130,7 @@ function PokerRoom() {
                     Resetar Votação
                 </button>
                 <button className="button" onClick={voltarHome}>
-                    Voltar
+                    Home
                 </button>
             </div>
         </div>
