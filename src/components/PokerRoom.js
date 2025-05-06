@@ -45,15 +45,17 @@ function PokerRoom() {
 
     return (
         <div className="card-box">
-            <h2>Sala: {roomId}</h2>
-            <h3>Participantes:</h3>
-            <ul>
-                {users.map((user, i) => (
-                    <li key={i}>
-                        {user.name} {user.hasVoted && '✔️'}
-                    </li>
-                ))}
-            </ul>
+            <div className="info-section">
+                <div className="room-name"><strong>Sala:</strong> {roomId}</div>
+                <div className="participants-list-title"><strong>Participantes:</strong></div>
+                <ul className="participant-list">
+                    {users.map((user, i) => (
+                        <li key={i}>
+                            {user.name} {user.hasVoted && '✔️'}
+                        </li>
+                    ))}
+                </ul>
+            </div>
 
             {votes.length === 0 ? (
                 <>
@@ -77,15 +79,17 @@ function PokerRoom() {
                 </>
             ) : (
                 <>
-                    <h3>Resultados:</h3>
-                    <ul>
-                        {votes.map((vote, idx) => (
-                            <li key={idx}>
-                                {vote.user}: {vote.vote}
-                            </li>
-                        ))}
-                    </ul>
-                    <h3>Média: {average}</h3>
+                    <div className="results-section">
+                        <div className="results-title"><strong>Resultados:</strong></div>
+                        <ul className="results-list">
+                            {votes.map((vote, idx) => (
+                                <li key={idx}>
+                                    {vote.user}: {vote.vote}
+                                </li>
+                            ))}
+                        </ul>
+                        <div className="results-average"><strong>Média: {average}</strong></div>
+                    </div>
                 </>
             )}
             <div className="button-row">
