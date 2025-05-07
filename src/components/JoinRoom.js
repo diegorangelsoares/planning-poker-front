@@ -29,7 +29,7 @@ function JoinRoom() {
         <div className="card-box">
             <h2>Entrar na Sala</h2>
             <input
-                className="input"
+                className="input input-texto"
                 type="text"
                 placeholder="ID da Sala"
                 value={roomId}
@@ -38,8 +38,9 @@ function JoinRoom() {
                     setError('');
                 }}
             />
+            <div></div>
             <input
-                className="input"
+                className="input input-texto"
                 type="text"
                 placeholder="Seu Nome"
                 value={userName}

@@ -51,14 +51,15 @@ function CreateRoom() {
                 <>
                     <h2>Criar Sala</h2>
                     <input
-                        className="input"
+                        className="input input-texto"
                         type="text"
                         placeholder="Nome da Sala"
                         value={roomName}
                         onChange={(e) => setRoomName(e.target.value)}
                     />
+                    <div></div>
                     <select
-                        className="input"
+                        className="input input-texto"
                         value={sequenceType}
                         onChange={(e) => setSequenceType(e.target.value)}
                     >
