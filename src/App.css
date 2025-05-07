@@ -89,6 +89,16 @@ body {
   border-radius: 4px;
 }
 
+.input-texto {
+  max-width: 300px;
+  width: 100%;
+}
+
+.input-selecao {
+  max-width: 300px;
+  width: 100%;
+}
+
 .container {
   max-width: 600px;
   margin: 0 auto;
@@ -198,10 +208,14 @@ body {
 
 .versao {
   left: 10px;
+  font-size: 10px;
+  font-weight: bold;
 }
 
 .infodev {
   right: 10px;
+  font-size: 10px;
+  font-weight: bold;
 }
 
 .actions {
