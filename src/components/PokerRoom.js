@@ -58,7 +58,7 @@ function PokerRoom() {
         <div className="card-box">
             <div className="info-section">
                 <div className="room-name">
-                    <strong>Sala:</strong> {roomId} &nbsp;&nbsp; <strong>Nome:</strong> {roomName}
+                    <strong>Sala:</strong> {roomId} &nbsp;&nbsp; <strong>Criado por:</strong> {roomName}
                 </div>
                 <div className="participants-list-title"><strong>Participantes:</strong></div>
                 <ul className="participant-list">
