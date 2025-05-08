@@ -53,7 +53,7 @@ function CreateRoom() {
                     <input
                         className="input input-texto"
                         type="text"
-                        placeholder="Nome da Sala"
+                        placeholder="Dono da sala"
                         value={roomName}
                         onChange={(e) => setRoomName(e.target.value)}
                     />
