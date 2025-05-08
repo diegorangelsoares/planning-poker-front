@@ -49,12 +49,10 @@ function JoinRoom() {
                     setError('');
                 }}
             />
-
             <div className="button-row">
                 <button className="button" onClick={handleJoinRoom}>Entrar</button>
                 <button className="button" onClick={voltarHome}>Voltar</button>
             </div>
-
             {error && <p className="error-text">{error}</p>}
         </div>
     );

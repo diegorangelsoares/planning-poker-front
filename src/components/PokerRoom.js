@@ -10,6 +10,7 @@ function PokerRoom() {
     const [votes, setVotes] = useState([]);
     const [average, setAverage] = useState(null);
     const [cards, setCards] = useState([]);
+    const [roomName, setRoomName] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,42 +31,19 @@ function PokerRoom() {
             setCanReveal(false);
         });
 
+        socket.on('roomInfo', ({ roomName }) => {
+            setRoomName(roomName);
+        });
+
         return () => {
             socket.off('updateUsers');
             socket.off('allVoted');
             socket.off('votesRevealed');
             socket.off('votesReset');
+            socket.off('setSequence');
+            socket.off('roomInfo');
         };
     }, []);
-
-    // useEffect(() => {
-    //
-    //     socket.emit('joinRoom', { roomId, userName: localStorage.getItem('userName') || 'Anônimo' });
-    //
-    //     socket.on('setSequence', ({ sequence }) => {
-    //         setCards(sequence);
-    //     });
-    //
-    //     socket.on('updateUsers', ({ users }) => setUsers(users));
-    //     socket.on('allVoted', () => setCanReveal(true));
-    //     socket.on('votesRevealed', ({ votes, average }) => {
-    //         setVotes(votes);
-    //         setAverage(average);
-    //     });
-    //     socket.on('votesReset', () => {
-    //         setVotes([]);
-    //         setSelectedCard(null);
-    //         setCanReveal(false);
-    //     });
-    //
-    //     return () => {
-    //         socket.off('setSequence');
-    //         socket.off('updateUsers');
-    //         socket.off('allVoted');
-    //         socket.off('votesRevealed');
-    //         socket.off('votesReset');
-    //     };
-    // }, [roomId]);
 
     const handleVote = (value) => {
         setSelectedCard(value);
@@ -79,7 +57,9 @@ function PokerRoom() {
     return (
         <div className="card-box">
             <div className="info-section">
-                <div className="room-name"><strong>Sala:</strong> {roomId}</div>
+                <div className="room-name">
+                    <strong>Sala:</strong> {roomId} &nbsp;&nbsp; <strong>Nome:</strong> {roomName}
+                </div>
                 <div className="participants-list-title"><strong>Participantes:</strong></div>
                 <ul className="participant-list">
                     {users.map((user, i) => (
