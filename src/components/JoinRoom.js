@@ -12,7 +12,8 @@ function JoinRoom() {
         if (roomId.trim() && userName.trim()) {
             socket.emit('checkRoomExists', roomId, (response) => {
                 if (response.exists) {
-                    socket.emit('joinRoom', { roomId, userName });
+                    localStorage.setItem('roomId', roomId);
+                    localStorage.setItem('userName', userName);
                     navigate(`/room/${roomId}`);
                 } else {
                     setError('Sala não encontrada.');
@@ -23,7 +24,9 @@ function JoinRoom() {
         }
     };
 
-    const voltarHome = () => navigate('/');
+    const voltarHome = () => {
+        navigate('/');
+    };
 
     return (
         <div className="card-box">
