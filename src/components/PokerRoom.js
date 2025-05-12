@@ -3,7 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import socket from '../socket';
 
 function PokerRoom() {
-    const { roomId } = useParams();
+    const { roomId: paramRoomId } = useParams();
+    const [roomId, setRoomId] = useState(paramRoomId);
+    const [userName, setUserName] = useState('');
     const [users, setUsers] = useState([]);
     const [selectedCard, setSelectedCard] = useState(null);
     const [canReveal, setCanReveal] = useState(false);
@@ -14,15 +16,36 @@ function PokerRoom() {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        const savedRoomId = localStorage.getItem('roomId');
+        const savedUserName = localStorage.getItem('userName');
+
+        if (savedRoomId && savedUserName) {
+            socket.emit('checkRoomExists', savedRoomId, ({ exists }) => {
+                if (exists) {
+                    socket.emit('joinRoom', { roomId: savedRoomId, userName: savedUserName }, () => {
+                        // ✅ Após confirmar entrada, requisita os dados da sala
+                        socket.emit('getRoomData', savedRoomId);
+                        setRoomId(savedRoomId);
+                        setUserName(savedUserName);
+                    });
+                } else {
+                    localStorage.removeItem('roomId');
+                    localStorage.removeItem('userName');
+                    navigate('/');
+                }
+            });
+        } else {
+            navigate('/');
+        }
+    }, [navigate, paramRoomId]);
+
+    useEffect(() => {
         socket.on('updateUsers', ({ users }) => setUsers(users));
         socket.on('allVoted', () => setCanReveal(true));
         socket.on('votesRevealed', ({ votes, average }) => {
             setVotes(votes);
             setAverage(average);
-        });
-
-        socket.on('setSequence', ({ sequence }) => {
-            setCards(sequence);
         });
 
         socket.on('votesReset', () => {
@@ -31,8 +54,23 @@ function PokerRoom() {
             setCanReveal(false);
         });
 
+        socket.on('setSequence', ({ sequence }) => {
+            setCards(sequence);
+        });
+
         socket.on('roomInfo', ({ roomName }) => {
             setRoomName(roomName);
+        });
+
+        socket.on('roomData', ({ roomName, cardOptions, users, votes, votingOpen }) => {
+            setRoomName(roomName);
+            setCards(cardOptions);
+            setUsers(users);
+            if (!votingOpen) {
+                setVotes(votes);
+                setCanReveal(false);
+                setAverage('?');
+            }
         });
 
         return () => {
@@ -42,6 +80,7 @@ function PokerRoom() {
             socket.off('votesReset');
             socket.off('setSequence');
             socket.off('roomInfo');
+            socket.off('roomData');
         };
     }, []);
 
@@ -52,15 +91,23 @@ function PokerRoom() {
 
     const handleRevealVotes = () => socket.emit('revealVotes', roomId);
     const handleResetVotes = () => socket.emit('resetVotes', roomId);
-    const voltarHome = () => navigate(`/`);
+
+    const voltarHome = () => {
+        localStorage.removeItem('roomId');
+        localStorage.removeItem('userName');
+        navigate('/');
+    };
 
     return (
         <div className="card-box">
             <div className="info-section">
                 <div className="room-name">
-                    <strong>Sala:</strong> {roomId} &nbsp;&nbsp; <strong>Criado por:</strong> {roomName}
+                    <strong>Sala:</strong> {roomId} &nbsp;&nbsp;
+                    <strong>Criado por:</strong> {roomName}
                 </div>
-                <div className="participants-list-title"><strong>Participantes:</strong></div>
+                <div className="participants-list-title">
+                    <strong>Participantes:</strong>
+                </div>
                 <ul className="participant-list">
                     {users.map((user, i) => (
                         <li key={i}>
@@ -105,6 +152,7 @@ function PokerRoom() {
                     </div>
                 </>
             )}
+
             <div className="button-row">
                 <button className="buttonreset" onClick={handleResetVotes}>
                     Resetar Votação
