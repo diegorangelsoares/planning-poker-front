@@ -37,7 +37,11 @@ function CreateRoom() {
                 setRoomId(roomId);
                 setCreatedRoomLink(`https://www.pleinipouquer.com/room/${roomId}`);
                 setIsCreating(false);
+                localStorage.setItem('roomId', roomId);
+                localStorage.setItem('userName', roomName);
+                navigate(`/room/${roomId}`);
             });
+
         } else {
             alert('Digite um nome para sala!');
         }
