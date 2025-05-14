@@ -18,7 +18,7 @@ function CreateRoom() {
             sequence = Array.from({ length: 40 }, (_, i) => String(i * 2));
         } else if (type === 'fibonacci') {
             let fib = [0, 1];
-            while (fib.length < 40) {
+            while (fib.length < 10) {
                 const next = fib[fib.length - 1] + fib[fib.length - 2];
                 fib.push(next);
             }

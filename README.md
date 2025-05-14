@@ -13,7 +13,7 @@ Este é o front do projeto Planning Poker, responsável disponibilizar as salas 
 
 ## 🛠️ Correções e melhorias
 
-- Possibilidade de remover participantes
+- 
 
 ## Build
 
