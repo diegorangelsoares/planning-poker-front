@@ -30,6 +30,7 @@ function PokerRoom() {
                         setUserName(savedUserName);
                     });
                 } else {
+                    console.info("nenhum usuario logado!");
                     localStorage.removeItem('roomId');
                     localStorage.removeItem('userName');
                     navigate('/');
