@@ -13,7 +13,7 @@ Este é o front do projeto Planning Poker, responsável disponibilizar as salas 
 
 ## 🛠️ Correções e melhorias
 
-- Ao criar sala, ir direto pra sala de votacao
+- Ao acessar direto o link, pedir o nome do participante
 
 ## Build
 
