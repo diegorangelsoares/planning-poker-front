@@ -41,6 +41,19 @@ function PokerRoom() {
     }, [navigate, paramRoomId]);
 
     useEffect(() => {
+        socket.on('removed', () => {
+            alert('Você foi removido da sala.');
+            localStorage.removeItem('roomId');
+            localStorage.removeItem('userName');
+            navigate('/');
+        });
+
+        return () => {
+            socket.off('removed');
+        };
+    }, []);
+
+    useEffect(() => {
         socket.on('updateUsers', ({ users }) => setUsers(users));
         socket.on('allVoted', () => setCanReveal(true));
         socket.on('votesRevealed', ({ votes, average }) => {
@@ -98,6 +111,12 @@ function PokerRoom() {
         navigate('/');
     };
 
+    const handleRemoveUser = (targetName) => {
+        if (window.confirm(`Deseja remover ${targetName} da sala?`)) {
+            socket.emit('removeUser', { roomId, userName: targetName });
+        }
+    };
+
     return (
         <div className="card-box">
             <div className="info-section">
@@ -108,13 +127,29 @@ function PokerRoom() {
                 <div className="participants-list-title">
                     <strong>Participantes:</strong>
                 </div>
+                {/*<ul className="participant-list">*/}
+                {/*    {users.map((user, i) => (*/}
+                {/*        <li key={i}>*/}
+                {/*            {user.name} {user.hasVoted && '✔️'}*/}
+                {/*        </li>*/}
+                {/*    ))}*/}
+                {/*</ul>*/}
                 <ul className="participant-list">
                     {users.map((user, i) => (
                         <li key={i}>
-                            {user.name} {user.hasVoted && '✔️'}
+                            {user.name} {user.hasVoted && '✔️'}{' '}
+                            {userName === roomName && user.name !== userName && (
+                                <span
+                                    onClick={() => handleRemoveUser(user.name)}
+                                    style={{ color: 'red', cursor: 'pointer', marginLeft: '8px' }}
+                                    >
+                                    remover
+                                </span>
+                            )}
                         </li>
                     ))}
                 </ul>
+
             </div>
 
             {votes.length === 0 ? (
