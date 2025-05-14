@@ -128,13 +128,7 @@ function PokerRoom() {
                 <div className="participants-list-title">
                     <strong>Participantes:</strong>
                 </div>
-                {/*<ul className="participant-list">*/}
-                {/*    {users.map((user, i) => (*/}
-                {/*        <li key={i}>*/}
-                {/*            {user.name} {user.hasVoted && '✔️'}*/}
-                {/*        </li>*/}
-                {/*    ))}*/}
-                {/*</ul>*/}
+
                 <ul className="participant-list">
                     {users.map((user, i) => (
                         <li key={i}>

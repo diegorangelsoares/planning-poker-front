@@ -31,9 +31,9 @@ function CreateRoom() {
         if (roomName.trim() !== '') {
             setIsCreating(true);
             const sequence = generateSequence(sequenceType);
-            socket.emit('createRoom', { roomName, sequence });
 
-            socket.on('roomCreated', ({ roomId }) => {
+            // Registra antes de emitir
+            socket.once('roomCreated', ({ roomId }) => {
                 setRoomId(roomId);
                 setCreatedRoomLink(`https://www.pleinipouquer.com/room/${roomId}`);
                 setIsCreating(false);
@@ -41,6 +41,8 @@ function CreateRoom() {
                 localStorage.setItem('userName', roomName);
                 navigate(`/room/${roomId}`);
             });
+
+            socket.emit('createRoom', { roomName, sequence });
 
         } else {
             alert('Digite um nome para sala!');
