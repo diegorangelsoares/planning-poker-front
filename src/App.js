@@ -1,7 +1,9 @@
-import { Routes, Route, useNavigate } from 'react-router-dom';
+// import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Link } from 'react-router-dom';
 import CreateRoom from './components/CreateRoom';
 import JoinRoom from './components/JoinRoom';
 import PokerRoom from './components/PokerRoom';
+import ListRooms from './components/ListRooms';
 import './App.css';
 
 function App() {
@@ -9,7 +11,9 @@ function App() {
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
-            <h1 className="text-4xl font-bold text-blue-700 mb-2">Pleini Pouquer</h1>
+            <Link to="/" className="text-4xl font-bold text-blue-700 mb-2 cursor-pointer">
+                Pleini Pouquer
+            </Link>
             <h2 className="text-lg text-gray-500 mb-6">🤼🏾‍♂️🎲 Cuidado pra num errar o butãum 🃏💡</h2>
             <div className="watermark">
                 <img src="/fundo.png" alt="Marca d'água" />
@@ -24,6 +28,7 @@ function App() {
                 <Route path="/create" element={<CreateRoom />} />
                 <Route path="/join" element={<JoinRoom />} />
                 <Route path="/room/:roomId" element={<PokerRoom />} />
+                <Route path="/rooms" element={<ListRooms />} />
             </Routes>
         </div>
     );
