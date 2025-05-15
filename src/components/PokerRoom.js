@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import socket from '../socket';
@@ -16,7 +17,6 @@ function PokerRoom() {
     const navigate = useNavigate();
 
     useEffect(() => {
-
         const savedRoomId = localStorage.getItem('roomId');
         const savedUserName = localStorage.getItem('userName');
 
@@ -24,13 +24,11 @@ function PokerRoom() {
             socket.emit('checkRoomExists', savedRoomId, ({ exists }) => {
                 if (exists) {
                     socket.emit('joinRoom', { roomId: savedRoomId, userName: savedUserName }, () => {
-                        // ✅ Após confirmar entrada, requisita os dados da sala
                         socket.emit('getRoomData', savedRoomId);
                         setRoomId(savedRoomId);
                         setUserName(savedUserName);
                     });
                 } else {
-                    console.info("nenhum usuario logado!");
                     localStorage.removeItem('roomId');
                     localStorage.removeItem('userName');
                     navigate('/');
@@ -49,9 +47,7 @@ function PokerRoom() {
             navigate('/');
         });
 
-        return () => {
-            socket.off('removed');
-        };
+        return () => socket.off('removed');
     }, []);
 
     useEffect(() => {
@@ -61,21 +57,13 @@ function PokerRoom() {
             setVotes(votes);
             setAverage(average);
         });
-
         socket.on('votesReset', () => {
             setVotes([]);
             setSelectedCard(null);
             setCanReveal(false);
         });
-
-        socket.on('setSequence', ({ sequence }) => {
-            setCards(sequence);
-        });
-
-        socket.on('roomInfo', ({ roomName }) => {
-            setRoomName(roomName);
-        });
-
+        socket.on('setSequence', ({ sequence }) => setCards(sequence));
+        socket.on('roomInfo', ({ roomName }) => setRoomName(roomName));
         socket.on('roomData', ({ roomName, cardOptions, users, votes, votingOpen }) => {
             setRoomName(roomName);
             setCards(cardOptions);
@@ -119,78 +107,72 @@ function PokerRoom() {
     };
 
     return (
-        <div className="card-box">
-            <div className="info-section">
+        <div className="layout">
+            <aside className="sidebar">
                 <div className="room-name">
-                    <strong>Sala:</strong> {roomId} &nbsp;&nbsp;
-                    <strong>Criado por:</strong> {roomName}
+                    Sala: {roomId}<br />
+                    Dono: <span style={{ color: '#007bff' }}>{roomName}</span>
                 </div>
-                <div className="participants-list-title">
-                    <strong>Participantes:</strong>
-                </div>
-
+                <div className="participants-title">Participantes:</div>
                 <ul className="participant-list">
                     {users.map((user, i) => (
                         <li key={i}>
-                            {user.name} {user.hasVoted && '✔️'}{' '}
+                            <span>
+                                {user.name} {user.hasVoted && '✔️'}
+                            </span>
                             {userName === roomName && user.name !== userName && (
                                 <span
                                     onClick={() => handleRemoveUser(user.name)}
-                                    style={{ color: 'red', cursor: 'pointer', marginLeft: '8px' }}
-                                    >
-                                    remover
+                                    style={{ color: 'red', cursor: 'pointer' }}
+                                >
+                                    ❌
                                 </span>
                             )}
                         </li>
                     ))}
                 </ul>
+            </aside>
 
-            </div>
-
-            {votes.length === 0 ? (
-                <>
-                    <h3>Escolha sua carta:</h3>
-                    <div className="card-grid">
-                        {cards.map((value, idx) => (
-                            <div
-                                key={idx}
-                                className={`card ${selectedCard === value ? 'selected' : ''}`}
-                                onClick={() => handleVote(value)}
-                            >
-                                {value}
-                            </div>
-                        ))}
-                    </div>
-                    {canReveal && (
-                        <button className="buttonrevelar" onClick={handleRevealVotes}>
-                            Revelar Votos
-                        </button>
-                    )}
-                </>
-            ) : (
-                <>
-                    <div className="results-section">
-                        <div className="results-title"><strong>Resultados:</strong></div>
-                        <ul className="results-list">
+            <main className="main-content">
+                {votes.length === 0 ? (
+                    <>
+                        <h3>Escolha sua carta:</h3>
+                        <div className="card-grid">
+                            {cards.map((value, idx) => (
+                                <div
+                                    key={idx}
+                                    className={`card ${selectedCard === value ? 'selected' : ''}`}
+                                    onClick={() => handleVote(value)}
+                                >
+                                    {value}
+                                </div>
+                            ))}
+                        </div>
+                        {canReveal && (
+                            <button className="buttonrevelar" onClick={handleRevealVotes}>
+                                👁️ Revelar Votos
+                            </button>
+                        )}
+                    </>
+                ) : (
+                    <div className="results-panel">
+                        <h3>📊 Resultados:</h3>
+                        <ul>
                             {votes.map((vote, idx) => (
                                 <li key={idx}>
                                     {vote.user}: {vote.vote}
                                 </li>
                             ))}
                         </ul>
-                        <div className="results-average"><strong>Média: {average}</strong></div>
+                        <div className="average">Média: {average}</div>
                     </div>
-                </>
-            )}
+                )}
 
-            <div className="button-row">
-                <button className="buttonreset" onClick={handleResetVotes}>
-                    Resetar Votação
-                </button>
-                <button className="button" onClick={voltarHome}>
-                    Sair da Sala
-                </button>
-            </div>
+                <div className="button-row">
+                    <button className="buttonreset" onClick={handleResetVotes}>🔄 Resetar</button>
+                    <button className="button" onClick={voltarHome}>🚪 Sair da Sala</button>
+                </div>
+            </main>
         </div>
     );
 }
