@@ -13,8 +13,8 @@ function PokerRoom() {
     const [average, setAverage] = useState(null);
     const [cards, setCards] = useState([]);
     const [roomName, setRoomName] = useState('');
-    const [storyText, setStoryText] = useState('');
     const [stories, setStories] = useState([]);
+    const [storyInput, setStoryInput] = useState('');
     const [activeStoryId, setActiveStoryId] = useState(null);
     const navigate = useNavigate();
 
@@ -78,6 +78,10 @@ function PokerRoom() {
                 setAverage('?');
             }
         });
+        socket.on('storyAdded', ({ stories, activeStoryId }) => {
+            setStories(stories);
+            setActiveStoryId(activeStoryId);
+        });
 
         return () => {
             socket.off('updateUsers');
@@ -87,6 +91,7 @@ function PokerRoom() {
             socket.off('setSequence');
             socket.off('roomInfo');
             socket.off('roomData');
+            socket.off('storyAdded');
         };
     }, []);
 
@@ -110,19 +115,11 @@ function PokerRoom() {
         }
     };
 
-    const handleCreateStory = () => {
-        if (storyText.trim() !== '') {
-            socket.emit('createStory', { roomId, storyName: storyText });
-            setStoryText('');
+    const handleAddStory = () => {
+        if (storyInput.trim()) {
+            socket.emit('addStory', { roomId, storyName: storyInput });
+            setStoryInput('');
         }
-    };
-
-    const handleSelectStory = (storyId) => {
-        setActiveStoryId(storyId);
-        socket.emit('setActiveStory', { roomId, storyId });
-        setVotes([]);
-        setSelectedCard(null);
-        setAverage(null);
     };
 
     return (
@@ -150,43 +147,33 @@ function PokerRoom() {
                         </li>
                     ))}
                 </ul>
+
+                <div style={{ marginTop: '20px' }}>
+                    <input
+                        type="text"
+                        value={storyInput}
+                        onChange={(e) => setStoryInput(e.target.value)}
+                        placeholder="Nova história"
+                        className="input input-texto"
+                    />
+                    <button className="button" onClick={handleAddStory}>Cadastrar História</button>
+                </div>
+
+                <div style={{ marginTop: '20px' }}>
+                    <strong>Histórias da Sala:</strong>
+                    <ul className="participant-list">
+                        {stories.map((story, idx) => (
+                            <li key={idx}>
+                                {story.name}
+                                {story.revealed && ` - Média: ${story.average}`}
+                                {story.id === activeStoryId && ' (Ativa)'}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </aside>
 
             <main className="main-content">
-                {userName === roomName && (
-                    <div style={{ marginBottom: '15px' }}>
-                        <input
-                            type="text"
-                            placeholder="Nova história"
-                            value={storyText}
-                            onChange={(e) => setStoryText(e.target.value)}
-                            className="input input-texto"
-                        />
-                        <button className="button" onClick={handleCreateStory}>Cadastrar História</button>
-                    </div>
-                )}
-
-                {stories.length > 0 && (
-                    <div>
-                        <h4>Histórias da Sala:</h4>
-                        <ul className="results-list">
-                            {stories.map((story) => (
-                                <li
-                                    key={story.id}
-                                    onClick={() => handleSelectStory(story.id)}
-                                    style={{
-                                        fontWeight: story.id === activeStoryId ? 'bold' : 'normal',
-                                        cursor: 'pointer',
-                                        backgroundColor: story.id === activeStoryId ? '#d0eaff' : 'transparent'
-                                    }}
-                                >
-                                    📝 {story.name} {story.revealed ? `| Média: ${story.average}` : ''}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-
                 {votes.length === 0 ? (
                     <>
                         <h3>Escolha sua carta:</h3>
