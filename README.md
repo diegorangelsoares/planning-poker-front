@@ -16,6 +16,7 @@ Este é o front do projeto Planning Poker, responsável disponibilizar as salas 
 - Ao acessar direto o link, pedir o nome do participante
 - Saber o quanto está sendo utilizado a aplicação
 - Quantas salas são criadas
+- (Nova Funcionalidade) Cadastro de histórias na sala e votações vinculadas as histórias 
 
 ## Build
 

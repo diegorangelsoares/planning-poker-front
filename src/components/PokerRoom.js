@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import socket from '../socket';
@@ -14,6 +13,9 @@ function PokerRoom() {
     const [average, setAverage] = useState(null);
     const [cards, setCards] = useState([]);
     const [roomName, setRoomName] = useState('');
+    const [storyText, setStoryText] = useState('');
+    const [stories, setStories] = useState([]);
+    const [activeStoryId, setActiveStoryId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,10 +66,12 @@ function PokerRoom() {
         });
         socket.on('setSequence', ({ sequence }) => setCards(sequence));
         socket.on('roomInfo', ({ roomName }) => setRoomName(roomName));
-        socket.on('roomData', ({ roomName, cardOptions, users, votes, votingOpen }) => {
+        socket.on('roomData', ({ roomName, cardOptions, users, votes, votingOpen, stories, activeStoryId }) => {
             setRoomName(roomName);
             setCards(cardOptions);
             setUsers(users);
+            setStories(stories || []);
+            setActiveStoryId(activeStoryId || null);
             if (!votingOpen) {
                 setVotes(votes);
                 setCanReveal(false);
@@ -106,6 +110,21 @@ function PokerRoom() {
         }
     };
 
+    const handleCreateStory = () => {
+        if (storyText.trim() !== '') {
+            socket.emit('createStory', { roomId, storyName: storyText });
+            setStoryText('');
+        }
+    };
+
+    const handleSelectStory = (storyId) => {
+        setActiveStoryId(storyId);
+        socket.emit('setActiveStory', { roomId, storyId });
+        setVotes([]);
+        setSelectedCard(null);
+        setAverage(null);
+    };
+
     return (
         <div className="layout">
             <aside className="sidebar">
@@ -134,6 +153,40 @@ function PokerRoom() {
             </aside>
 
             <main className="main-content">
+                {userName === roomName && (
+                    <div style={{ marginBottom: '15px' }}>
+                        <input
+                            type="text"
+                            placeholder="Nova história"
+                            value={storyText}
+                            onChange={(e) => setStoryText(e.target.value)}
+                            className="input input-texto"
+                        />
+                        <button className="button" onClick={handleCreateStory}>Cadastrar História</button>
+                    </div>
+                )}
+
+                {stories.length > 0 && (
+                    <div>
+                        <h4>Histórias da Sala:</h4>
+                        <ul className="results-list">
+                            {stories.map((story) => (
+                                <li
+                                    key={story.id}
+                                    onClick={() => handleSelectStory(story.id)}
+                                    style={{
+                                        fontWeight: story.id === activeStoryId ? 'bold' : 'normal',
+                                        cursor: 'pointer',
+                                        backgroundColor: story.id === activeStoryId ? '#d0eaff' : 'transparent'
+                                    }}
+                                >
+                                    📝 {story.name} {story.revealed ? `| Média: ${story.average}` : ''}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+
                 {votes.length === 0 ? (
                     <>
                         <h3>Escolha sua carta:</h3>
