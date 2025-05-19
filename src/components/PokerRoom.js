@@ -163,10 +163,21 @@ function PokerRoom() {
                     <strong>Histórias da Sala:</strong>
                     <ul className="participant-list">
                         {stories.map((story, idx) => (
-                            <li key={idx}>
-                                {story.name}
-                                {story.revealed && ` - Média: ${story.average}`}
-                                {story.id === activeStoryId && ' (Ativa)'}
+                            <li key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span>
+                                    📝 {story.name}
+                                    {story.revealed && ` - Média: ${story.average}`}
+                                    {story.id === activeStoryId && ' (Ativa)'}
+                                </span>
+                                {story.id !== activeStoryId && (
+                                    <button
+                                        className="button"
+                                        style={{ padding: '4px 8px', fontSize: '12px' }}
+                                        onClick={() => socket.emit('setActiveStory', { roomId, storyId: story.id })}
+                                    >
+                                        Selecionar
+                                    </button>
+                                )}
                             </li>
                         ))}
                     </ul>
