@@ -164,23 +164,37 @@ function PokerRoom() {
                     <ul className="participant-list">
                         {stories.map((story, idx) => (
                             <li key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <span>
+                                  <span>
                                     📝 {story.name}
-                                    {story.revealed && ` - Média: ${story.average}`}
-                                    {story.id === activeStoryId && ' (Ativa)'}
-                                </span>
-                                {story.id !== activeStoryId && (
-                                    <button
-                                        className="button"
-                                        style={{ padding: '4px 8px', fontSize: '12px' }}
-                                        onClick={() => socket.emit('setActiveStory', { roomId, storyId: story.id })}
-                                    >
-                                        Selecionar
-                                    </button>
-                                )}
+                                      {story.revealed && ` - Média: ${story.average}`}
+                                      {story.id === activeStoryId && ' (Ativa)'}
+                                  </span>
+                                <div style={{ display: 'flex', gap: '5px' }}>
+                                    {story.id !== activeStoryId && (
+                                        <>
+                                            <button
+                                                className="button"
+                                                style={{ padding: '4px 8px', fontSize: '12px' }}
+                                                onClick={() => socket.emit('setActiveStory', { roomId, storyId: story.id })}
+                                            >
+                                                Selecionar
+                                            </button>
+                                            {userName === roomName && (
+                                                <button
+                                                    className="button"
+                                                    style={{ padding: '4px 8px', fontSize: '12px', backgroundColor: '#e74c3c' }}
+                                                    onClick={() => socket.emit('deleteStory', { roomId, storyId: story.id })}
+                                                >
+                                                    🗑️
+                                                </button>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
                             </li>
                         ))}
                     </ul>
+
                 </div>
             </aside>
 
