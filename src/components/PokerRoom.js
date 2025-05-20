@@ -153,10 +153,11 @@ function PokerRoom() {
                         type="text"
                         value={storyInput}
                         onChange={(e) => setStoryInput(e.target.value)}
-                        placeholder="Nova história"
-                        className="input input-texto"
+                        placeholder="Nova história (32 caracteres)"
+                        className="input input-texto-historia"
+                        maxLength={32}
                     />
-                    <button className="button" onClick={handleAddStory}>Cadastrar História</button>
+                    <button className="buttonCadastrarHistoria" onClick={handleAddStory}>Cadastrar História</button>
                 </div>
 
                 <div style={{ marginTop: '20px' }}>
@@ -177,7 +178,7 @@ function PokerRoom() {
                                                 style={{ padding: '4px 8px', fontSize: '12px' }}
                                                 onClick={() => socket.emit('setActiveStory', { roomId, storyId: story.id })}
                                             >
-                                                Selecionar
+                                                Votar
                                             </button>
                                             {userName === roomName && (
                                                 <button

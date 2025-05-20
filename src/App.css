@@ -77,6 +77,7 @@ body {
 
 .button,
 .buttonrevelar,
+.buttonCadastrarHistoria,
 .buttonreset,
 .buttonvoltar {
   padding: 10px 20px;
@@ -118,6 +119,17 @@ button:hover {
   background-color: #d33c3c;
 }
 
+.buttonCadastrarHistoria {
+  background-color: #0056b3;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 2px;
+  color: white;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+}
+
 .buttonvoltar {
   background-color: #555;
 }
@@ -134,6 +146,15 @@ button:hover {
 .input-texto {
   max-width: 300px;
   width: 100%;
+}
+
+.input-texto-historia {
+  max-width: 350px;
+  width: 100%;
+  padding: 2px 5px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
 .input-selecao {
