@@ -10,8 +10,9 @@ body {
 
 .layout {
   display: flex;
-  flex-direction: row;
-  min-height: 100vh;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
 }
 
 .sidebar {
@@ -20,6 +21,7 @@ body {
   min-width: 220px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #ccc;
+  width: 300px;
 }
 
 .sidebar .room-name {
@@ -230,7 +232,7 @@ button:hover {
 
 .main-content {
   flex: 1;
-  padding: 30px;
+  padding: 0 30px 30px 30px; /* <<< Alterado: remove o padding-top */
   text-align: center;
 }
 
@@ -327,7 +329,6 @@ h3 {
   text-align: center;
 }
 
-/* Marca d'água centralizada */
 .watermark {
   position: fixed;
   top: 50%;
@@ -356,7 +357,6 @@ h3 {
   border-radius: 8px;
   border: 1px solid #ccc;
   box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-  margin-top: 30px;
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
