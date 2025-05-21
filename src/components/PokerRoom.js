@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import socket from '../socket';
@@ -14,6 +13,9 @@ function PokerRoom() {
     const [average, setAverage] = useState(null);
     const [cards, setCards] = useState([]);
     const [roomName, setRoomName] = useState('');
+    const [stories, setStories] = useState([]);
+    const [storyInput, setStoryInput] = useState('');
+    const [activeStoryId, setActiveStoryId] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,15 +66,21 @@ function PokerRoom() {
         });
         socket.on('setSequence', ({ sequence }) => setCards(sequence));
         socket.on('roomInfo', ({ roomName }) => setRoomName(roomName));
-        socket.on('roomData', ({ roomName, cardOptions, users, votes, votingOpen }) => {
+        socket.on('roomData', ({ roomName, cardOptions, users, votes, votingOpen, stories, activeStoryId }) => {
             setRoomName(roomName);
             setCards(cardOptions);
             setUsers(users);
+            setStories(stories || []);
+            setActiveStoryId(activeStoryId || null);
             if (!votingOpen) {
                 setVotes(votes);
                 setCanReveal(false);
                 setAverage('?');
             }
+        });
+        socket.on('storyAdded', ({ stories, activeStoryId }) => {
+            setStories(stories);
+            setActiveStoryId(activeStoryId);
         });
 
         return () => {
@@ -83,6 +91,7 @@ function PokerRoom() {
             socket.off('setSequence');
             socket.off('roomInfo');
             socket.off('roomData');
+            socket.off('storyAdded');
         };
     }, []);
 
@@ -103,6 +112,13 @@ function PokerRoom() {
     const handleRemoveUser = (targetName) => {
         if (window.confirm(`Deseja remover ${targetName} da sala?`)) {
             socket.emit('removeUser', { roomId, userName: targetName });
+        }
+    };
+
+    const handleAddStory = () => {
+        if (storyInput.trim()) {
+            socket.emit('addStory', { roomId, storyName: storyInput });
+            setStoryInput('');
         }
     };
 
@@ -131,6 +147,56 @@ function PokerRoom() {
                         </li>
                     ))}
                 </ul>
+
+                <div style={{ marginTop: '20px' }}>
+                    <input
+                        type="text"
+                        value={storyInput}
+                        onChange={(e) => setStoryInput(e.target.value)}
+                        placeholder="Nova história (32 caracteres)"
+                        className="input input-texto-historia"
+                        maxLength={32}
+                    />
+                    <button className="buttonCadastrarHistoria" onClick={handleAddStory}>Cadastrar História</button>
+                </div>
+
+                <div style={{ marginTop: '20px' }}>
+                    <strong>Histórias da Sala:</strong>
+                    <ul className="participant-list">
+                        {stories.map((story, idx) => (
+                            <li key={idx} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                  <span>
+                                    📝 {story.name}
+                                      {story.revealed && ` - Média: ${story.average}`}
+                                      {story.id === activeStoryId && ' (Ativa)'}
+                                  </span>
+                                <div style={{ display: 'flex', gap: '5px' }}>
+                                    {story.id !== activeStoryId && (
+                                        <>
+                                            <button
+                                                className="button"
+                                                style={{ padding: '4px 8px', fontSize: '12px' }}
+                                                onClick={() => socket.emit('setActiveStory', { roomId, storyId: story.id })}
+                                            >
+                                                Votar
+                                            </button>
+                                            {userName === roomName && (
+                                                <button
+                                                    className="button"
+                                                    style={{ padding: '4px 8px', fontSize: '12px', backgroundColor: '#e74c3c' }}
+                                                    onClick={() => socket.emit('deleteStory', { roomId, storyId: story.id })}
+                                                >
+                                                    🗑️
+                                                </button>
+                                            )}
+                                        </>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+
+                </div>
             </aside>
 
             <main className="main-content">
