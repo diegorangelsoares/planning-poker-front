@@ -10,6 +10,7 @@ body {
 
 .layout {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   gap: 20px;
   padding: 20px;
@@ -108,7 +109,6 @@ button:hover {
 .button {
   background-color: #007bff;
 }
-
 .button:hover {
   background-color: #0056b3;
 }
@@ -201,12 +201,6 @@ button:hover {
   margin-bottom: 10px;
 }
 
-.participant-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
 .participant-list,
 .results-list {
   list-style: none;
@@ -232,7 +226,7 @@ button:hover {
 
 .main-content {
   flex: 1;
-  padding: 0 30px 30px 30px; /* <<< Alterado: remove o padding-top */
+  padding: 0 30px 30px 30px;
   text-align: center;
 }
 
@@ -403,4 +397,37 @@ h3 {
 
 .room-card:hover {
   transform: translateY(-4px);
+}
+
+/* 📱 Responsividade para mobile */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+    padding: 10px;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    box-shadow: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 20px 10px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+  }
+
+  .button-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .results-panel {
+    margin-top: 20px;
+  }
 }
