@@ -38,7 +38,6 @@ function ListRooms() {
                             <p><strong>Quantidade de usuários:</strong> {Object.keys(room.users || {}).length}</p>
                             <p><strong>Cartas:</strong> {room.sequence?.join(', ')}</p>
                             <p><strong>Votos Revelados:</strong> {room.revealed ? 'Sim' : 'Não'}</p>
-                            <p><strong>Média:</strong> {room.average}</p>
 
                             {room.historias && room.historias.length > 0 && (
                                 <div style={{ marginTop: '10px' }}>
